@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     ListAdapter listAdapter;
 
-    ArrayList<Alarm> all_alarms = new ArrayList<>();
+    public static ArrayList<Alarm> all_alarms = new ArrayList<>();
 
     public static int idx_turnOff = -1;
 
@@ -60,8 +60,11 @@ public class MainActivity extends AppCompatActivity {
         if (idx_turnOff != -1){
             Alarm current_alarm = all_alarms.get(idx_turnOff);
             current_alarm.setWaiting(false);
+            current_alarm.setColor("gray");
 
             all_alarms.set(idx_turnOff, current_alarm);
+            listAdapter.notifyDataSetChanged();
+
             idx_turnOff = -1;
         }
     }
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (create_new){
-            all_alarms.add(new Alarm(sdf.format(time), true, intent_id));
+            all_alarms.add(new Alarm(sdf.format(time), true, intent_id, "gray"));
         } else {
             Alarm cur_alarm = all_alarms.get(idx);
             cur_alarm.setId(intent_id);

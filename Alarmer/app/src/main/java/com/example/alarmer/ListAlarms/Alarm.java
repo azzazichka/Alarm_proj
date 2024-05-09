@@ -7,12 +7,23 @@ public class Alarm {
     String time;
     Boolean waiting;
 
+    String color;
+
     int id;
 
-    public Alarm(String time, Boolean waiting, int id   ) {
+    public Alarm(String time, Boolean waiting, int id, String color) {
         this.time = time;
         this.waiting = waiting;
         this.id = id;
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public int getId() {
