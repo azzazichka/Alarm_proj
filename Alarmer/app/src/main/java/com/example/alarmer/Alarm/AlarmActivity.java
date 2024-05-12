@@ -68,6 +68,8 @@ public class AlarmActivity extends AppCompatActivity {
 //            Log.i("azzazichka", String.valueOf(idx_alarmOff));
             MainActivity.idx_turnOff = getIntent().getIntExtra("alarm_index", -1);
 
+
+
             startActivity(main_activity_intent);
         });
 

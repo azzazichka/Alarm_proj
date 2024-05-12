@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,28 +7,63 @@
     android:layout_height="match_parent"
     tools:context=".Ui.MainActivity">
 
-
-    <ListView
-        android:id="@+id/listview"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/alarm_item" />
+        tools:context=".MainActivity"
+        android:id="@+id/fl_forDark"
+        android:foreground="@drawable/dim"
+        tools:foreground="">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/alarm_item" />
+
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/set_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:id="@+id/add"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/add"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_alarm"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/add_alarm"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="80dp"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_audio"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/add_audio"
+        android:layout_marginBottom="90dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/delete_mode"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/delete"
+        android:layout_marginEnd="90dp"
         android:layout_marginBottom="16dp"
-        android:src="@drawable/baseline_add_alarm_24"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="invisible"/>
 
 
 
@@ -39,4 +74,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -53,6 +53,20 @@
             android:layout_marginStart="25dp"
             android:textColor="@color/black"/>
 
+        <ImageView
+            android:id="@+id/delete_mode_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="5dp"
+
+            android:layout_toEndOf="@id/ring_in"
+
+            />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

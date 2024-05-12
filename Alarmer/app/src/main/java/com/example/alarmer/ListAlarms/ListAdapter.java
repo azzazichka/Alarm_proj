@@ -4,12 +4,13 @@ package com.example.alarmer.ListAlarms;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.example.alarmer.Ui.MainActivity;
 
 public class ListAdapter extends ArrayAdapter<Alarm> {
     ArrayList<Alarm> all_alarms;
+
     ColorDrawable[] colors_alarm = new ColorDrawable[]{new ColorDrawable(Color.GRAY), new ColorDrawable(Color.GREEN)};
 
     public ListAdapter(@NonNull Context context, ArrayList<Alarm> dataArrayList) {
@@ -35,7 +37,7 @@ public class ListAdapter extends ArrayAdapter<Alarm> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, @NonNull ViewGroup parent) {
-//        Toast.makeText(getContext().getApplicationContext(), "position " + position, Toast.LENGTH_SHORT).show();
+
         Alarm listData = getItem(position);
 
         if (view == null) {
@@ -52,11 +54,12 @@ public class ListAdapter extends ArrayAdapter<Alarm> {
         all_alarms = MainActivity.all_alarms;
         Alarm current_alarm = all_alarms.get(position);
 
+
         if (current_alarm.getWaiting()) {
             if (Objects.equals(current_alarm.getColor(), "gray")) {
                 TransitionDrawable mTransition = new TransitionDrawable(colors_alarm);
                 view.findViewById(R.id.back_itm_alrm).setBackground(mTransition);
-                mTransition.startTransition(500);
+                mTransition.startTransition(250);
                 current_alarm.setColor("green");
             } else {
                 view.findViewById(R.id.back_itm_alrm).setBackground(new ColorDrawable(Color.GREEN));
@@ -67,7 +70,7 @@ public class ListAdapter extends ArrayAdapter<Alarm> {
             if (Objects.equals(all_alarms.get(position).getColor(), "green")) {
                 TransitionDrawable mTransition = new TransitionDrawable(new ColorDrawable[]{colors_alarm[1], colors_alarm[0]});
                 view.findViewById(R.id.back_itm_alrm).setBackground(mTransition);
-                mTransition.startTransition(500);
+                mTransition.startTransition(250);
                 current_alarm.setColor("gray");
                 MainActivity.all_alarms.set(position, current_alarm);
             } else {
@@ -75,6 +78,17 @@ public class ListAdapter extends ArrayAdapter<Alarm> {
 
             }
         }
+
+        ImageView cancel_icon = view.findViewById(R.id.delete_mode_icon);
+
+        if (MainActivity.delete_mode){
+            cancel_icon.setBackgroundResource(R.drawable.delete_icon);
+
+        } else {
+            cancel_icon.setBackgroundResource(0);
+
+        }
+
 
         return view;
     }
