@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alarmer.Alarm.AlarmActivity;
+import com.example.alarmer.Alarm.Alarm_controller;
 import com.example.alarmer.ListAlarms.Alarm;
 import com.example.alarmer.ListAlarms.ListAdapter;
 import com.example.alarmer.R;
@@ -43,7 +44,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    FloatingActionButton add, add_alarm, add_audio, delete_mode_btn;
+    FloatingActionButton add, add_alarm, delete_mode_btn;
 
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("azzazichka", idx_turnOff + " index to turn off");
 
         if (idx_turnOff != -1) {
+            idx_turnOff = get_alarm_by_id(idx_turnOff);
             Alarm current_alarm = all_alarms.get(idx_turnOff);
             current_alarm.setWaiting(false);
             current_alarm.setColor("green");
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         try {
             listAdapter.notifyDataSetChanged();
-        }  catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.i("azzazichka", "it's clear");
         }
 
@@ -133,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
         add = (FloatingActionButton) binding.add;
         add_alarm = (FloatingActionButton) binding.addAlarm;
-        add_audio = (FloatingActionButton) binding.addAudio;
         delete_mode_btn = (FloatingActionButton) binding.deleteMode;
 
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.fab_open);
@@ -143,9 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         add.setOnClickListener(v -> animateFab());
 
-        add_audio.setOnClickListener(v -> {
-            animateFab();
-        });
+
 
 
         delete_mode_btn.setOnClickListener(v -> {
@@ -154,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
             animateFab();
         });
-
 
 
         add_alarm.setOnClickListener(v -> {
@@ -181,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         if (delete_mode) {
+                            cancel_alarm(all_alarms.get(i).getId());
                             all_alarms.remove(i);
                             listAdapter.notifyDataSetChanged();
 
@@ -242,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private PendingIntent getAlarmActionPendingIntent(Date time, boolean create_new, int idx) {
-        Intent intent = new Intent(this, AlarmActivity.class);
+        Intent intent = new Intent(this, Alarm_controller.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         final int intent_id = (int) System.currentTimeMillis();
 
@@ -259,18 +258,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-        intent.putExtra("alarm_index", idx);
+        intent.putExtra("alarm_index", all_alarms.get(idx).getId());
         intent.putExtra("array_size", all_alarms.size());
 
-        return PendingIntent.getActivity(this, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+
+        return PendingIntent.getBroadcast(this, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     public void cancel_alarm(int intent_id) {
-        Intent intent = new Intent(this, AlarmActivity.class);
+        Intent intent = new Intent(this, Alarm_controller.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -297,10 +297,8 @@ public class MainActivity extends AppCompatActivity {
         if (isOpen) {
             add.startAnimation(rotateBackward);
             add_alarm.startAnimation(fabClose);
-            add_audio.startAnimation(fabClose);
             delete_mode_btn.startAnimation(fabClose);
             add_alarm.setClickable(false);
-            add_audio.setClickable(false);
             delete_mode_btn.setClickable(false);
             isOpen = false;
 
@@ -327,10 +325,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             add.startAnimation(rotateForward);
             add_alarm.startAnimation(fabOpen);
-            add_audio.startAnimation(fabOpen);
             delete_mode_btn.startAnimation(fabOpen);
             add_alarm.setClickable(true);
-            add_audio.setClickable(true);
             delete_mode_btn.setClickable(true);
             isOpen = true;
 
@@ -354,5 +350,16 @@ public class MainActivity extends AppCompatActivity {
             }).start();
 
         }
+
     }
+
+    public int get_alarm_by_id(int id) {
+        for (int position = 0; position < all_alarms.size(); position++) {
+            if (all_alarms.get(position).getId() == id) {
+                return position;
+            }
+        }
+        return -1;
+    }
+
 }

@@ -5,7 +5,9 @@ import static android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 import android.app.AlarmManager;
+import android.app.KeyguardManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -13,10 +15,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,7 +35,7 @@ import com.example.alarmer.databinding.ActivityAlarmBinding;
 
 import java.util.ArrayList;
 
-public class AlarmActivity extends AppCompatActivity {
+public class AlarmActivity extends AppCompatActivity  {
 
     Ringtone ringtone;
 
@@ -45,10 +50,23 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        binding = ActivityAlarmBinding.inflate(getLayoutInflater());
-
         setContentView(R.layout.activity_alarm);
 
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1){
+            setShowWhenLocked(true);
+            setTurnScreenOn(true);
+            KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+            keyguardManager.requestDismissKeyguard(this, null);
+
+        } else {
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
 
         cancel_btn = findViewById(R.id.check_answer);
@@ -62,13 +80,10 @@ public class AlarmActivity extends AppCompatActivity {
 
             Intent main_activity_intent = new Intent(this, MainActivity.class);
             main_activity_intent.setFlags(FLAG_ACTIVITY_REORDER_TO_FRONT | FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
-//            int idx_alarmOff = getIntent().getIntExtra("alarm_index", -1);
-//            main_activity_intent.putExtra("alarm_index2turnOff", idx_alarmOff);
 
-//            Log.i("azzazichka", String.valueOf(idx_alarmOff));
             MainActivity.idx_turnOff = getIntent().getIntExtra("alarm_index", -1);
 
-
+            Log.i("azzazichka", "alarm_index = " + MainActivity.idx_turnOff +  " alarm_activity");
 
             startActivity(main_activity_intent);
         });
@@ -106,4 +121,6 @@ public class AlarmActivity extends AppCompatActivity {
 
 
     }
+
+
 }

@@ -41,19 +41,19 @@
         android:id="@+id/add_alarm"
         android:layout_gravity="end|bottom"
         android:src="@drawable/add_alarm"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="90dp"
         android:visibility="invisible"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/add_audio"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/add_audio"
-        android:layout_marginBottom="90dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="invisible"/>
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/add_audio"-->
+<!--        android:layout_gravity="end|bottom"-->
+<!--        android:src="@drawable/add_audio"-->
+<!--        android:layout_marginBottom="90dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:visibility="invisible"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
