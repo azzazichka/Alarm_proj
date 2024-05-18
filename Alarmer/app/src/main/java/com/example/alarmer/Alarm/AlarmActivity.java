@@ -35,7 +35,7 @@ import com.example.alarmer.databinding.ActivityAlarmBinding;
 
 import java.util.ArrayList;
 
-public class AlarmActivity extends AppCompatActivity  {
+public class AlarmActivity extends AppCompatActivity {
 
     Ringtone ringtone;
 
@@ -44,7 +44,7 @@ public class AlarmActivity extends AppCompatActivity  {
 
     Button cancel_btn;
 
-
+    boolean answered = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +53,7 @@ public class AlarmActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_alarm);
 
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
             setTurnScreenOn(true);
             KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
@@ -63,17 +62,17 @@ public class AlarmActivity extends AppCompatActivity  {
         } else {
             getWindow().addFlags(
                     WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                            WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
 
 
         cancel_btn = findViewById(R.id.check_answer);
 
         cancel_btn.setOnClickListener(view -> {
-            Toast.makeText(this, "cancel btn clicked " + ringtone.isPlaying(), Toast.LENGTH_SHORT).show();
-            if (ringtone != null && ringtone.isPlaying()){
+            answered = true;
+            if (ringtone != null && ringtone.isPlaying()) {
                 ringtone.stop();
             }
             v.cancel();
@@ -83,7 +82,7 @@ public class AlarmActivity extends AppCompatActivity  {
 
             MainActivity.idx_turnOff = getIntent().getIntExtra("alarm_index", -1);
 
-            Log.i("azzazichka", "alarm_index = " + MainActivity.idx_turnOff +  " alarm_activity");
+            Log.i("azzazichka", "alarm_index = " + MainActivity.idx_turnOff + " alarm_activity");
 
             startActivity(main_activity_intent);
         });
@@ -91,12 +90,12 @@ public class AlarmActivity extends AppCompatActivity  {
         Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         ringtone = RingtoneManager.getRingtone(this, notificationUri);
 
-        if (ringtone == null){
+        if (ringtone == null) {
             notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             ringtone = RingtoneManager.getRingtone(this, notificationUri);
         }
 
-        if (ringtone != null){
+        if (ringtone != null && !ringtone.isPlaying()) {
             ringtone.play();
         }
 
@@ -106,21 +105,30 @@ public class AlarmActivity extends AppCompatActivity  {
 
         v.vibrate(pattern, 0);
 
-//        startLockTask();
+//////        startLockTask();
+
 
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
+        super.onStop();
+        Log.i("azzazichka", "stopped alarm activity");
 
         if (ringtone != null && ringtone.isPlaying()){
             ringtone.stop();
-            v.cancel();
         }
-        super.onDestroy();
+        v.cancel();
 
+        if (!answered) {
 
+            Intent alarm_intent = new Intent();
+            alarm_intent.setAction("com.example.alarmer.RELOAD_PAGE");
+            alarm_intent.putExtra("alarm_index", getIntent().getIntExtra("alarm_index", -1));
+            sendBroadcast(alarm_intent);
+        }
     }
 
-
+    @Override
+    public void onBackPressed() {}
 }

@@ -30,8 +30,11 @@
 
         <receiver
             android:process=":remote"
-            android:name=".Alarm.Alarm_controller">
-
+            android:name=".Alarm.AlarmReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.alarmer.RELOAD_PAGE" />
+            </intent-filter>
         </receiver>
 
         <activity

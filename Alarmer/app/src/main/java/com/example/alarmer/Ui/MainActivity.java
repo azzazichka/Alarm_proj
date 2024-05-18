@@ -2,12 +2,15 @@ package com.example.alarmer.Ui;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -22,11 +25,10 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alarmer.Alarm.AlarmActivity;
-import com.example.alarmer.Alarm.Alarm_controller;
+import com.example.alarmer.Alarm.AlarmReceiver;
 import com.example.alarmer.ListAlarms.Alarm;
 import com.example.alarmer.ListAlarms.ListAdapter;
 import com.example.alarmer.R;
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     ColorDrawable[] colors_alarm;
 
+    BroadcastReceiver alarm_receiver = new AlarmReceiver();
 
     @Override
     protected void onStart() {
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
+
+
+        registerReceiver(alarm_receiver, new IntentFilter(
+                "com.example.alarmer.RELOAD_PAGE"), Context.RECEIVER_EXPORTED);
+
 
 
         mFrameLayout = (FrameLayout) binding.flForDark;
@@ -231,6 +240,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("azzazichka", "stopped");
+
+    }
+
     private PendingIntent getAlarmInfoPendingIntent() {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -241,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private PendingIntent getAlarmActionPendingIntent(Date time, boolean create_new, int idx) {
-        Intent intent = new Intent(this, Alarm_controller.class);
+        Intent intent = new Intent(this, AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         final int intent_id = (int) System.currentTimeMillis();
 
@@ -259,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         intent.putExtra("alarm_index", all_alarms.get(idx).getId());
-        intent.putExtra("array_size", all_alarms.size());
 
 
 
@@ -267,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cancel_alarm(int intent_id) {
-        Intent intent = new Intent(this, Alarm_controller.class);
+        Intent intent = new Intent(this, AlarmReceiver.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, intent_id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -276,6 +291,8 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.cancel(pendingIntent);
 
     }
+
+
 
     public void start_alarm(int hours, int minutes, boolean create_new, int idx) {
         Calendar calendar = Calendar.getInstance();
