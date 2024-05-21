@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             materialTimePicker.show(getSupportFragmentManager(), "tag_picker");
 
 
+
         });
 
 
@@ -304,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
+
 
         alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(calendar.getTime(), create_new, idx));
 
