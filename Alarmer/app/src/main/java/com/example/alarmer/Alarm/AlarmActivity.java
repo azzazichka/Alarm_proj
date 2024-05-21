@@ -93,7 +93,7 @@ public class AlarmActivity extends AppCompatActivity {
 
                 startActivity(main_activity_intent);
             } else {
-                Toast.makeText(this, "wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Неправильно", Toast.LENGTH_SHORT).show();
                 answer.setText(null);
             }
 

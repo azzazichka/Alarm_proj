@@ -28,7 +28,7 @@ import com.example.alarmer.Ui.MainActivity;
 public class ListAdapter extends ArrayAdapter<Alarm> {
     ArrayList<Alarm> all_alarms;
 
-    ColorDrawable[] colors_alarm = new ColorDrawable[]{new ColorDrawable(Color.GRAY), new ColorDrawable(Color.GREEN)};
+//    ColorDrawable[] colors_alarm;
 
     public ListAdapter(@NonNull Context context, ArrayList<Alarm> dataArrayList) {
         super(context, R.layout.alarm_item, dataArrayList);
@@ -57,24 +57,24 @@ public class ListAdapter extends ArrayAdapter<Alarm> {
 
         if (current_alarm.getWaiting()) {
             if (Objects.equals(current_alarm.getColor(), "gray")) {
-                TransitionDrawable mTransition = new TransitionDrawable(colors_alarm);
+                TransitionDrawable mTransition = new TransitionDrawable(MainActivity.colors_alarm);
                 view.findViewById(R.id.back_itm_alrm).setBackground(mTransition);
                 mTransition.startTransition(250);
                 current_alarm.setColor("green");
             } else {
-                view.findViewById(R.id.back_itm_alrm).setBackground(new ColorDrawable(Color.GREEN));
+                view.findViewById(R.id.back_itm_alrm).setBackground(MainActivity.colors_alarm[1]);
 
             }
             MainActivity.all_alarms.set(position, current_alarm);
         } else {
             if (Objects.equals(all_alarms.get(position).getColor(), "green")) {
-                TransitionDrawable mTransition = new TransitionDrawable(new ColorDrawable[]{colors_alarm[1], colors_alarm[0]});
+                TransitionDrawable mTransition = new TransitionDrawable(new ColorDrawable[]{MainActivity.colors_alarm[1], MainActivity.colors_alarm[0]});
                 view.findViewById(R.id.back_itm_alrm).setBackground(mTransition);
                 mTransition.startTransition(250);
                 current_alarm.setColor("gray");
                 MainActivity.all_alarms.set(position, current_alarm);
             } else {
-                view.findViewById(R.id.back_itm_alrm).setBackground(new ColorDrawable(Color.GRAY));
+                view.findViewById(R.id.back_itm_alrm).setBackground(MainActivity.colors_alarm[0]);
 
             }
         }

@@ -7,15 +7,28 @@
     android:layout_height="match_parent"
     tools:context=".Ui.MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24pt"
+        android:text="Задача:"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/darker_blue"
+        android:height="400dp"
+        app:layout_anchor="@id/question"
+        app:layout_anchorGravity="top|center"
 
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="x + x =     "
+        android:fontFamily="@font/montserrat_bold"
         android:textSize="18pt"
         android:id="@+id/question"
         android:layout_gravity="center"
         android:layout_marginBottom="150dp"
+        android:textColor="@color/dark_blue"
         />
 
     <EditText
@@ -25,24 +38,28 @@
         android:textSize="18pt"
         android:text=""
         android:singleLine="true"
-
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/dark_blue"
+        android:backgroundTint="@color/dark_blue"
         app:layout_anchorGravity="end|center"
         app:layout_anchor="@id/question"
 
 
-        />
 
+        />
 
 
     <Button
+
         android:id="@+id/check_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check"
-        android:textSize="14pt"
-        android:gravity="center"
-        android:layout_marginTop="40dp"
         android:layout_gravity="center"
-        />
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/dark_blue"
+        android:gravity="center"
+        android:text="Проверить"
+        android:textSize="14pt"
+        app:cornerRadius="10dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     File all_alarms_file;
 
-    ColorDrawable[] colors_alarm;
+    public static ColorDrawable[] colors_alarm;
 
     BroadcastReceiver alarm_receiver = new AlarmReceiver();
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        colors_alarm = new ColorDrawable[]{new ColorDrawable(Color.GRAY), new ColorDrawable(Color.GREEN)};
+        colors_alarm = new ColorDrawable[]{new ColorDrawable(getResources().getColor(R.color.dark_gray)), new ColorDrawable(getResources().getColor(R.color.blue))};
 
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                             if (current_alarm.getWaiting()) {
                                 current_alarm.setColor("grey");
                                 current_alarm.setWaiting(false);
-                                Toast.makeText(MainActivity.this, "cancel alarm", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(MainActivity.this, "cancel alarm", Toast.LENGTH_SHORT).show();
 
                                 TransitionDrawable mTransition = new TransitionDrawable(new ColorDrawable[]{colors_alarm[1], colors_alarm[0]});
                                 view.findViewById(R.id.back_itm_alrm).setBackground(mTransition);
