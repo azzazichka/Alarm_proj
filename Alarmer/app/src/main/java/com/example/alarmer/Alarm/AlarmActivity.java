@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.alarmer.R;
 import com.example.alarmer.Ui.MainActivity;
@@ -55,6 +56,8 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.i("azzazichka", "answered = " + answered);
         add_params2activity();
+        
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         setContentView(R.layout.activity_alarm);
 
