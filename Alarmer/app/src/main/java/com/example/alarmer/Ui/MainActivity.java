@@ -167,10 +167,24 @@ public class MainActivity extends AppCompatActivity {
         add_alarm.setOnClickListener(v -> {
             animateFab();
 
+            Calendar calendar = Calendar.getInstance();
+            int minutes = calendar.get(Calendar.MINUTE);
+            int hours = calendar.get(Calendar.HOUR_OF_DAY);
+
+
+            if (minutes == 59) {
+                minutes = 0;
+                hours += 1;
+                if (hours == 24){
+                    hours = 0;
+                }
+            } else {
+                minutes += 1;
+            }
             MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(12)
-                    .setMinute(0)
+                    .setHour(hours)
+                    .setMinute(minutes)
                     .setTitleText("Выберите время для будильника")
                     .build();
 
