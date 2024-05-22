@@ -56,7 +56,7 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.i("azzazichka", "answered = " + answered);
         add_params2activity();
-        
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         setContentView(R.layout.activity_alarm);
